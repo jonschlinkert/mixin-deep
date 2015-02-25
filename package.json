@@ -1,7 +1,7 @@
 {
   "name": "mixin-deep",
   "description": "Deeply mix the properties of objects into the first object. Like merge-deep, but doesn't clone.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/jonschlinkert/mixin-deep",
   "author": {
     "name": "Jon Schlinkert",
@@ -37,12 +37,15 @@
     "should": "^4.0.4"
   },
   "keywords": [
-    "docs",
-    "documentation",
-    "generate",
-    "generator",
-    "markdown",
-    "templates",
-    "verb"
+    "extend",
+    "key",
+    "keys",
+    "merge",
+    "mixin",
+    "object",
+    "prop",
+    "properties",
+    "util",
+    "values"
   ]
 }
