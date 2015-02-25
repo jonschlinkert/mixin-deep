@@ -1,7 +1,7 @@
 {
   "name": "mixin-deep",
-  "description": "Deeply mix the properties of objects into the first object, while also mixing-in child objects.",
-  "version": "0.1.0",
+  "description": "Deeply mix the properties of objects into the first object. Like merge-deep, but doesn't clone.",
+  "version": "1.0.0",
   "homepage": "https://github.com/jonschlinkert/mixin-deep",
   "author": {
     "name": "Jon Schlinkert",
@@ -14,24 +14,27 @@
   "bugs": {
     "url": "https://github.com/jonschlinkert/mixin-deep/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/jonschlinkert/mixin-deep/blob/master/LICENSE-MIT"
-    }
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/jonschlinkert/mixin-deep/blob/master/LICENSE"
+  },
+  "files": [
+    "index.js"
   ],
   "main": "index.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha"
+  },
+  "dependencies": {
+    "for-own": "^0.1.1",
+    "is-plain-object": "^0.1.0"
   },
   "devDependencies": {
     "mocha": "*",
-    "should": "^4.0.4",
-    "verb": ">= 0.2.6",
-    "verb-tag-jscomments": ">= 0.2.0"
+    "should": "^4.0.4"
   },
   "keywords": [
     "docs",
@@ -41,9 +44,5 @@
     "markdown",
     "templates",
     "verb"
-  ],
-  "dependencies": {
-    "for-own": "^0.1.1",
-    "is-plain-object": "^0.1.0"
-  }
+  ]
 }
