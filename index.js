@@ -1,12 +1,20 @@
 'use strict';
 
 var isObject = require('is-plain-object');
-var forIn = require('for-own');
+var forOwn = require('for-own');
 
 module.exports = function deepMixin(o, objects) {
-  if (!o || !objects) { return o || {}; }
+  if (!isObject(o)) return {};
+  if (!isObject(objects)) return o;
 
   var len = arguments.length - 1;
+  for (var i = 0; i < len; i++) {
+    var obj = arguments[i + 1];
+
+    if (isObject(obj)) {
+      forOwn(obj, copy, o);
+    }
+  }
 
   function copy(value, key) {
     var obj = this[key];
@@ -14,14 +22,6 @@ module.exports = function deepMixin(o, objects) {
       deepMixin(obj, value);
     } else {
       this[key] = value;
-    }
-  }
-
-  for (var i = 0; i < len; i++) {
-    var obj = arguments[i + 1];
-
-    if (isObject(obj)) {
-      forIn(obj, copy, o);
     }
   }
   return o;
