@@ -1,38 +1,46 @@
 'use strict';
 
-var isObject = require('is-plain-object');
-var forOwn = require('for-own');
+var lazy = require('lazy-cache')(require);
+lazy('is-extendable', 'isExtendable');
+lazy('for-in', 'forIn');
 
-function mixinDeep(o, objects) {
-  if (!isObject(o)) return {};
-  if (!isObject(objects)) return o;
-
-  // don't slice args for v8 optimizations
-  var len = arguments.length - 1;
-  for (var i = 0; i < len; i++) {
-    var obj = arguments[i + 1];
+function mixinDeep(target, objects) {
+  var len = arguments.length, i = 0;
+  while (++i < len) {
+    var obj = arguments[i];
     if (isObject(obj)) {
-      forOwn(obj, copy, o);
+      lazy.forIn(obj, copy, target);
     }
   }
-  return o;
+  return target;
 }
 
 /**
- * copy properties from the source object to the
+ * Copy properties from the source object to the
  * target object.
  *
- * @param  {*} `value`
+ * @param  {*} `val`
  * @param  {String} `key`
  */
 
-function copy(value, key) {
+function copy(val, key) {
   var obj = this[key];
-  if (isObject(value) && isObject(obj)) {
-    mixinDeep(obj, value);
+  if (isObject(val) && isObject(obj)) {
+    mixinDeep(obj, val);
   } else {
-    this[key] = value;
+    this[key] = val;
   }
+}
+
+/**
+ * Returns true if `val` is an object or function.
+ *
+ * @param  {any} val
+ * @return {Boolean}
+ */
+
+function isObject(val) {
+  return lazy.isExtendable(val) && !Array.isArray(val);
 }
 
 /**
