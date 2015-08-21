@@ -10,16 +10,14 @@
   "main": [
     "index.js"
   ],
-  "ignore": [
-    ".*"
-  ],
   "dependencies": {
-    "for-own": "^0.1.3",
-    "is-plain-object": "^2.0.0"
+    "for-in": "^0.1.4",
+    "is-extendable": "^0.1.1",
+    "lazy-cache": "^0.2.3"
   },
   "devDependencies": {
-    "mocha": "^2.2.4",
-    "should": "^6.0.1"
+    "mocha": "*",
+    "should": "*"
   },
   "keywords": [
     "deep",
