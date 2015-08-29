@@ -1,15 +1,14 @@
 'use strict';
 
-var lazy = require('lazy-cache')(require);
-lazy('is-extendable', 'isExtendable');
-lazy('for-in', 'forIn');
+var isExtendable = require('is-extendable');
+var forIn = require('for-in');
 
 function mixinDeep(target, objects) {
   var len = arguments.length, i = 0;
   while (++i < len) {
     var obj = arguments[i];
     if (isObject(obj)) {
-      lazy.forIn(obj, copy, target);
+      forIn(obj, copy, target);
     }
   }
   return target;
@@ -40,7 +39,7 @@ function copy(val, key) {
  */
 
 function isObject(val) {
-  return lazy.isExtendable(val) && !Array.isArray(val);
+  return isExtendable(val) && !Array.isArray(val);
 }
 
 /**
