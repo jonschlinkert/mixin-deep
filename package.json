@@ -20,12 +20,13 @@
     "test": "mocha"
   },
   "dependencies": {
-    "for-in": "^0.1.4",
+    "for-in": "^1.0.2",
     "is-extendable": "^0.1.1"
   },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*"
+    "gulp-format-md": "^0.1.11",
+    "mocha": "^3.2.0",
+    "should": "^11.2.0"
   },
   "keywords": [
     "deep",
@@ -40,14 +41,25 @@
     "util",
     "values"
   ],
-  "verbiage": {
+  "verb": {
+    "toc": false,
+    "layout": "default",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
-        "mixin-object",
-        "merge-deep",
+        "defaults-deep",
         "extend-shallow",
-        "defaults-deep"
+        "merge-deep",
+        "mixin-object"
       ]
+    },
+    "lint": {
+      "reflinks": true
     }
   }
 }
