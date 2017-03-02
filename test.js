@@ -7,7 +7,7 @@
 
 'use strict';
 
-/* deps: mocha */
+require('mocha');
 require('should');
 var mixinDeep = require('./');
 
@@ -36,6 +36,28 @@ describe('.mixinDeep()', function () {
     var obj2 = {a: {b: 2, d : {f : 'f'} }};
 
     mixinDeep(obj1, obj2).should.eql({a: {b: 2, c: 1, d: {e: 1, f: 'f'} }});
+  });
+
+  it('should use the last value defined', function () {
+    var obj1 = {a: 'b'};
+    var obj2 = {a: 'c'};
+
+    mixinDeep(obj1, obj2).should.eql({a: 'c'});
+  });
+
+  it('should use the last value defined on nested object', function () {
+    var obj1 = {a: 'b', c: {d: 'e'}};
+    var obj2 = {a: 'c', c: {d: 'f'}};
+
+    mixinDeep(obj1, obj2).should.eql({a: 'c', c: {d: 'f'}});
+  });
+
+  it('should shallow clone when an empty object is passed', function () {
+    var obj1 = {a: 'b', c: {d: 'e'}};
+    var obj2 = {a: 'c', c: {d: 'f'}};
+
+    var res = mixinDeep({}, obj1, obj2);
+    res.should.eql({a: 'c', c: {d: 'f'}});
   });
 
   it('should merge additional objects into the first:', function () {
