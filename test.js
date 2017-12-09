@@ -11,14 +11,14 @@ require('mocha');
 require('should');
 var mixinDeep = require('./');
 
-describe('.mixinDeep()', function () {
-  it('should deeply mix the properties of object into the first object.', function () {
+describe('.mixinDeep()', function() {
+  it('should deeply mix the properties of object into the first object.', function() {
     var a = mixinDeep({a: {aa: 'aa'} }, {a: {bb: 'bb'} }, {a: {cc: 'cc'} }); a.should.eql({a: {aa: 'aa', bb: 'bb', cc: 'cc'} });
     var b = mixinDeep({a: {aa: 'aa', dd: {ee: 'ff'} } }, {a: {bb: 'bb', dd: {gg: 'hh'} } }, {a: {cc: 'cc', dd: {ii: 'jj'} } });
     b.should.eql({a: {aa: 'aa', dd: {ee: 'ff', gg: 'hh', ii: 'jj'}, bb: 'bb', cc: 'cc'} });
   });
 
-  it('should merge object properties without affecting any object', function () {
+  it('should merge object properties without affecting any object', function() {
     var obj1 = {a: 0, b: 1};
     var obj2 = {c: 2, d: 3};
     var obj3 = {a: 4, d: 5};
@@ -31,28 +31,28 @@ describe('.mixinDeep()', function () {
     actual.should.not.eql(obj3);
   });
 
-  it('should do a deep merge', function () {
+  it('should do a deep merge', function() {
     var obj1 = {a: {b: 1, c: 1, d: {e: 1, f: 1}}};
     var obj2 = {a: {b: 2, d : {f : 'f'} }};
 
     mixinDeep(obj1, obj2).should.eql({a: {b: 2, c: 1, d: {e: 1, f: 'f'} }});
   });
 
-  it('should use the last value defined', function () {
+  it('should use the last value defined', function() {
     var obj1 = {a: 'b'};
     var obj2 = {a: 'c'};
 
     mixinDeep(obj1, obj2).should.eql({a: 'c'});
   });
 
-  it('should use the last value defined on nested object', function () {
+  it('should use the last value defined on nested object', function() {
     var obj1 = {a: 'b', c: {d: 'e'}};
     var obj2 = {a: 'c', c: {d: 'f'}};
 
     mixinDeep(obj1, obj2).should.eql({a: 'c', c: {d: 'f'}});
   });
 
-  it('should shallow clone when an empty object is passed', function () {
+  it('should shallow clone when an empty object is passed', function() {
     var obj1 = {a: 'b', c: {d: 'e'}};
     var obj2 = {a: 'c', c: {d: 'f'}};
 
@@ -60,7 +60,7 @@ describe('.mixinDeep()', function () {
     res.should.eql({a: 'c', c: {d: 'f'}});
   });
 
-  it('should merge additional objects into the first:', function () {
+  it('should merge additional objects into the first:', function() {
     var obj1 = {a: {b: 1, c: 1, d: {e: 1, f: 1}}};
     var obj2 = {a: {b: 2, d : {f : 'f'} }};
 
@@ -68,7 +68,7 @@ describe('.mixinDeep()', function () {
     obj1.should.eql({a: {b: 2, c: 1, d: {e: 1, f: 'f'} }});
   });
 
-  it('should clone objects during merge', function () {
+  it('should clone objects during merge', function() {
     var obj1 = {a: {b :1}};
     var obj2 = {a: {c :2}};
 
@@ -78,7 +78,7 @@ describe('.mixinDeep()', function () {
     actual.a.should.not.eql(obj2.a);
   });
 
-  it('should deep clone arrays during merge', function () {
+  it('should deep clone arrays during merge', function() {
     var obj1 = {a: [1, 2, [3, 4]]};
     var obj2 = {b : [5, 6]};
 
