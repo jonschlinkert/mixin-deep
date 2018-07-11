@@ -1,53 +1,34 @@
 'use strict';
 
-var isExtendable = require('is-extendable');
-var forIn = require('for-in');
-
-function mixinDeep(target, objects) {
-  var len = arguments.length, i = 0;
-  while (++i < len) {
-    var obj = arguments[i];
+function mixinDeep(target, ...rest) {
+  for (let obj of rest) {
     if (isObject(obj)) {
-      forIn(obj, copy, target);
+      for (let key in obj) {
+        if (key !== '__proto__') {
+          mixin(target, obj[key], key);
+        }
+      }
     }
   }
   return target;
 }
 
-/**
- * Copy properties from the source object to the
- * target object.
- *
- * @param  {*} `val`
- * @param  {String} `key`
- */
-
-function copy(val, key) {
-  if (key === '__proto__') {
-    return;
-  }
-
-  var obj = this[key];
+function mixin(target, val, key) {
+  let obj = target[key];
   if (isObject(val) && isObject(obj)) {
     mixinDeep(obj, val);
   } else {
-    this[key] = val;
+    target[key] = val;
   }
 }
 
-/**
- * Returns true if `val` is an object or function.
- *
- * @param  {any} val
- * @return {Boolean}
- */
-
 function isObject(val) {
-  return isExtendable(val) && !Array.isArray(val);
+  return typeof val === 'function' || (typeof val === 'object' && val !== null && !Array.isArray(val));
 }
 
 /**
- * Expose `mixinDeep`
+ * Expose mixinDeep
+ * @type {Function}
  */
 
 module.exports = mixinDeep;

@@ -1,123 +1,128 @@
 /*!
  * mixin-deep <https://github.com/jonschlinkert/mixin-deep>
  *
- * Copyright (c) 2014-2015 Jon Schlinkert.
+ * Copyright (c) 2014-present Jon Schlinkert.
  * Licensed under the MIT License
  */
 
 'use strict';
 
 require('mocha');
-require('should');
-var mixinDeep = require('./');
+const assert = require('assert');
+const mixinDeep = require('./');
 
 describe('.mixinDeep()', function() {
   it('should deeply mix the properties of object into the first object.', function() {
-    var a = mixinDeep({a: {aa: 'aa'} }, {a: {bb: 'bb'} }, {a: {cc: 'cc'} }); a.should.eql({a: {aa: 'aa', bb: 'bb', cc: 'cc'} });
-    var b = mixinDeep({a: {aa: 'aa', dd: {ee: 'ff'} } }, {a: {bb: 'bb', dd: {gg: 'hh'} } }, {a: {cc: 'cc', dd: {ii: 'jj'} } });
-    b.should.eql({a: {aa: 'aa', dd: {ee: 'ff', gg: 'hh', ii: 'jj'}, bb: 'bb', cc: 'cc'} });
+    const a = mixinDeep({ a: { aa: 'aa' } }, { a: { bb: 'bb' } }, { a: { cc: 'cc' } });
+    assert.deepEqual(a, { a: { aa: 'aa', bb: 'bb', cc: 'cc' } });
+    const b = mixinDeep(
+      { a: { aa: 'aa', dd: { ee: 'ff' } } },
+      { a: { bb: 'bb', dd: { gg: 'hh' } } },
+      { a: { cc: 'cc', dd: { ii: 'jj' } } }
+    );
+    assert.deepEqual(b, { a: { aa: 'aa', dd: { ee: 'ff', gg: 'hh', ii: 'jj' }, bb: 'bb', cc: 'cc' } });
   });
 
-  it('should merge object properties without affecting any object', function() {
-    var obj1 = {a: 0, b: 1};
-    var obj2 = {c: 2, d: 3};
-    var obj3 = {a: 4, d: 5};
+  it('should copy properties onto the first object', function() {
+    const obj1 = { a: 0, b: 1 };
+    const obj2 = { c: 2, d: 3 };
+    const obj3 = { a: 4, d: 5 };
 
-    var actual = {a: 4, b: 1, c: 2, d: 5 };
+    const actual = { a: 4, b: 1, c: 2, d: 5 };
 
-    mixinDeep({}, obj1, obj2, obj3).should.eql(actual);
-    actual.should.not.eql(obj1);
-    actual.should.not.eql(obj2);
-    actual.should.not.eql(obj3);
+    assert.deepEqual(mixinDeep({}, obj1, obj2, obj3), actual);
+    assert.notDeepEqual(actual, obj1);
+    assert.notDeepEqual(actual, obj2);
+    assert.notDeepEqual(actual, obj3);
   });
 
-  it('should do a deep merge', function() {
-    var obj1 = {a: {b: 1, c: 1, d: {e: 1, f: 1}}};
-    var obj2 = {a: {b: 2, d : {f : 'f'} }};
+  it('should mixin nested object properties', function() {
+    const obj1 = { a: { b: 1, c: 1, d: { e: 1, f: 1 } } };
+    const obj2 = { a: { b: 2, d: { f: 'f' } } };
 
-    mixinDeep(obj1, obj2).should.eql({a: {b: 2, c: 1, d: {e: 1, f: 'f'} }});
+    assert.deepEqual(mixinDeep(obj1, obj2), { a: { b: 2, c: 1, d: { e: 1, f: 'f' } } });
   });
 
   it('should use the last value defined', function() {
-    var obj1 = {a: 'b'};
-    var obj2 = {a: 'c'};
+    const obj1 = { a: 'b' };
+    const obj2 = { a: 'c' };
 
-    mixinDeep(obj1, obj2).should.eql({a: 'c'});
+    assert.deepEqual(mixinDeep(obj1, obj2), { a: 'c' });
   });
 
   it('should use the last value defined on nested object', function() {
-    var obj1 = {a: 'b', c: {d: 'e'}};
-    var obj2 = {a: 'c', c: {d: 'f'}};
+    const obj1 = { a: 'b', c: { d: 'e' } };
+    const obj2 = { a: 'c', c: { d: 'f' } };
 
-    mixinDeep(obj1, obj2).should.eql({a: 'c', c: {d: 'f'}});
+    assert.deepEqual(mixinDeep(obj1, obj2), { a: 'c', c: { d: 'f' } });
   });
 
-  it('should shallow clone when an empty object is passed', function() {
-    var obj1 = {a: 'b', c: {d: 'e'}};
-    var obj2 = {a: 'c', c: {d: 'f'}};
+  it('should shallow mixin when an empty object is passed', function() {
+    const obj1 = { a: 'b', c: { d: 'e' } };
+    const obj2 = { a: 'c', c: { d: 'f' } };
 
-    var res = mixinDeep({}, obj1, obj2);
-    res.should.eql({a: 'c', c: {d: 'f'}});
+    const res = mixinDeep({}, obj1, obj2);
+    assert.deepEqual(res, { a: 'c', c: { d: 'f' } });
   });
 
-  it('should merge additional objects into the first:', function() {
-    var obj1 = {a: {b: 1, c: 1, d: {e: 1, f: 1}}};
-    var obj2 = {a: {b: 2, d : {f : 'f'} }};
+  it('should mixin additional objects into the first:', function() {
+    const obj1 = { a: { b: 1, c: 1, d: { e: 1, f: 1 } } };
+    const obj2 = { a: { b: 2, d: { f: 'f' } } };
 
     mixinDeep(obj1, obj2);
-    obj1.should.eql({a: {b: 2, c: 1, d: {e: 1, f: 'f'} }});
+    assert.deepEqual(obj1, { a: { b: 2, c: 1, d: { e: 1, f: 'f' } } });
   });
 
-  it('should clone objects during merge', function() {
-    var obj1 = {a: {b :1}};
-    var obj2 = {a: {c :2}};
+  it('should mixin objects during mixin', function() {
+    const obj1 = { a: { b: 1 } };
+    const obj2 = { a: { c: 2 } };
 
-    var actual = mixinDeep({}, obj1, obj2);
-    actual.should.eql({a:{b:1, c:2}});
-    actual.a.should.eql(obj1.a);
-    actual.a.should.not.eql(obj2.a);
+    const actual = mixinDeep({}, obj1, obj2);
+    assert.deepEqual(actual, { a: { b: 1, c: 2 } });
+    assert.deepEqual(actual.a, obj1.a);
+    assert.notDeepEqual(actual.a, obj2.a);
   });
 
-  it('should deep clone arrays during merge', function() {
-    var obj1 = {a: [1, 2, [3, 4]]};
-    var obj2 = {b : [5, 6]};
+  it('should deep mixin arrays during mixin', function() {
+    const obj1 = { a: [1, 2, [3, 4]] };
+    const obj2 = { b: [5, 6] };
 
-    var actual = mixinDeep(obj1, obj2);
-    actual.a.should.eql([1, 2, [3, 4]]);
-    actual.a[2].should.eql([3, 4]);
-    actual.b.should.eql(obj2.b);
+    const actual = mixinDeep(obj1, obj2);
+    assert.deepEqual(actual.a, [1, 2, [3, 4]]);
+    assert.deepEqual(actual.a[2], [3, 4]);
+    assert.deepEqual(actual.b, obj2.b);
   });
 
-  it('should copy source properties', function() {
-    mixinDeep({ test: true }).test.should.be.true;
+  it('should not modify source properties', function() {
+    assert.equal(mixinDeep({ test: true }).test, true);
   });
 
-  it('should not clone arrays', function() {
-    mixinDeep([1, 2, 3]).should.eql([1, 2, 3]);
-    mixinDeep([1, 2, 3], {}).should.eql([1, 2, 3]);
+  it('should not mixin arrays', function() {
+    assert.deepEqual(mixinDeep([1, 2, 3]), [1, 2, 3]);
+    assert.deepEqual(mixinDeep([1, 2, 3], {}), [1, 2, 3]);
   });
 
   it('should work with sparse objects:', function() {
-    var actual = mixinDeep({}, undefined, {a: 'b'}, undefined, {c: 'd'});
-    actual.should.eql({a: 'b', c: 'd'});
+    const actual = mixinDeep({}, undefined, { a: 'b' }, undefined, { c: 'd' });
+    assert.deepEqual(actual, { a: 'b', c: 'd' });
   });
 
-  it('should clone RegExps', function() {
-    var fixture = /test/g;
-    var actual = mixinDeep(fixture);
-    actual.should.eql(fixture);
+  it('should mixin RegExps', function() {
+    const fixture = /test/g;
+    const actual = mixinDeep(fixture);
+    assert.deepEqual(actual, fixture);
   });
 
-  it('should clone Dates', function() {
-    var fixture = new Date();
-    var actual = mixinDeep(fixture);
-    actual.should.eql(fixture);
+  it('should mixin Dates', function() {
+    const fixture = new Date();
+    const actual = mixinDeep(fixture);
+    assert.deepEqual(actual, fixture);
   });
 
-  it('should not clone objects created with custom constructor', function() {
-    function TestType() { }
-    var fixture = new TestType();
-    var actual = mixinDeep(fixture);
-    actual.should.eql(fixture);
+  it('should not mixin objects created with custom constructor', function() {
+    function TestType() {}
+    const fixture = new TestType();
+    const actual = mixinDeep(fixture);
+    assert.deepEqual(actual, fixture);
   });
 });
