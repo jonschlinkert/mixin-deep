@@ -1,4 +1,4 @@
-# always ignore files
+always ignore files
 *.DS_Store
 .idea
 .vscode
