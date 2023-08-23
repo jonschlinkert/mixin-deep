@@ -25,6 +25,10 @@ function mixin(target, val, key) {
   let obj = target[key];
   if (isObject(val) && isObject(obj)) {
     mixinDeep(obj, val);
+  } else if (!(key in target) && isObject(val)) {
+    // `target` can be mutated by later mixins. Therefore, if we are currently adding an object to `target`,
+    // it could be mutated later. We need to make sure that mutation will not change the original data.
+    target[key] = {...val};
   } else {
     target[key] = val;
   }
